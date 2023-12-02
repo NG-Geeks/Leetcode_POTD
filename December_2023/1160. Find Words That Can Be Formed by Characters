@@ -1,0 +1,34 @@
+
+1160. Find Words That Can Be Formed by Characters
+
+You are given an array of strings words and a string chars.
+A string is good if it can be formed by characters from chars (each character can only be used once).
+Return the sum of lengths of all good strings in words.
+
+Solution::
+#pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+    int countCharacters(vector<string>& words, string chars) {
+        vector<int>chfreq(26,0);
+        for(auto &ch:chars)chfreq[ch-'a']++;
+        int cnt=0;
+        for(auto &str:words){
+            bool f =1;
+            vector<int> copyfreq(26);
+            for(auto &ch:str){
+                if(++copyfreq[ch-'a'] > chfreq[ch-'a']){
+                    f =0;break;
+                }
+            }
+            if(f)cnt += str.size();
+        }
+        return cnt;
+    }
+};
