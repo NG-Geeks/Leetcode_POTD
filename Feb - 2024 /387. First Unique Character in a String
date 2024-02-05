@@ -1,0 +1,38 @@
+Question :: 387. First Unique Character in a String
+
+Given a string s, find the first non-repeating character in it and return its index. If it does not exist, return -1.n an integer array nums representing the data status of this set after the error.
+
+Solution::
+
+Complexity::
+Time complexity:
+    O(N)
+Space complexity:
+    O(N)
+
+Code::
+#pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        int a[26]={0};
+        int n=s.size();
+        for(int i=0;i<n;i++){
+            int ch=s[i]-'a';
+            a[ch]++;
+        }
+        for(int i=0;i<n;i++){
+            int ch=s[i]-'a';
+            if(a[ch]==1)
+            return i;
+        }
+        return -1;
+
+    }
+};
