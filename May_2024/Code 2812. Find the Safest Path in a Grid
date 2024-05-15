@@ -1,0 +1,94 @@
+Problem::
+2812. Find the Safest Path in a Grid
+You are given a 0-indexed 2D matrix grid of size n x n, where (r, c) represents:
+
+A cell containing a thief if grid[r][c] = 1
+An empty cell if grid[r][c] = 0
+You are initially positioned at cell (0, 0). In one move, you can move to any adjacent cell in the grid, including cells containing thieves.
+
+The safeness factor of a path on the grid is defined as the minimum manhattan distance from any cell in the path to any thief in the grid.
+
+Return the maximum safeness factor of all paths leading to cell (n - 1, n - 1).
+
+An adjacent cell of cell (r, c), is one of the cells (r, c + 1), (r, c - 1), (r + 1, c) and (r - 1, c) if it exists.
+
+The Manhattan distance between two cells (a, b) and (x, y) is equal to |a - x| + |b - y|, where |val| denotes the absolute value of val.
+
+ 
+Time Complexity:: O(n^2>log(n))
+Space Complexity :: O(N^2)
+Solution ::
+class Solution {
+    vector<int>dr ={-1,0,1,0};
+    vector<int>dc = {0,1,0,-1};
+    bool valid(int &i , int &j , vector<vector<bool>>&vis){
+        int n = vis.size();
+        int m= n;
+        if( i<0 || j<0 || i>=n || j>=m || vis[i][j])return 0;
+        return 1;
+    }
+    bool safe(vector<vector<int>>&dist , int safedist){
+        int n = dist.size();
+        if(dist[0][0]<safedist)return 0;
+        vector<vector<bool>>vis(n , vector<bool>(n));
+        queue<pair<int,int>>q;
+        q.push({0,0});
+        while(!q.empty()){
+            int row = q.front().first , col = q.front().second;
+            q.pop();
+            if(row ==n-1 && col == n-1)return 1;
+            for(int i=0 ; i<4 ; i++){
+                int newr =row + dr[i];
+                int newc = col + dc[i];
+                if(valid(newr, newc , vis)){
+                if(dist[newr][newc]<safedist)continue;
+                vis[newr][newc] = 1;
+                q.push({newr , newc});
+                }
+            }
+        }
+        return 0;
+    }
+public:
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>>dist(n , vector<int>(m,0));
+        vector<vector<bool>>vis(n , vector<bool>(m));
+        queue<pair<int,int>>q;
+        for(int i=0 ; i<n ; i++){
+            for(int j=0 ; j<m ; j++){
+                if(grid[i][j] == 1){q.push({i,j});
+                vis[i][j] = 1;}
+            }
+        }
+        int len = 0;
+        while(!q.empty()){
+            int size = q.size();
+            while(size--){
+                int row = q.front().first , col  = q.front().second;
+                q.pop();
+                dist[row][col] = len;
+                for(int dirIdx=0 ; dirIdx<4 ; dirIdx++){
+                    int newr = row + dr[dirIdx];
+                    int newc = col + dc[dirIdx];
+                    if(!valid(newr,newc ,vis))continue;
+                    vis[newr][newc] = 1;
+                    q.push({newr , newc});
+                }
+            }
+            len++;
+        }
+        int low = 0 , high = len;
+        int ans =0 ; 
+        while(low<=high){
+                int mid = low + (high - low)/2;
+                if(safe(dist , mid)){
+                    ans = mid; 
+                    low = mid+1;
+                }
+                else high = mid-1;
+        }
+        return ans;
+    }
+};
