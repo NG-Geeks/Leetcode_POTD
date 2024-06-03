@@ -1,0 +1,35 @@
+Problem ::  
+2486. Append Characters to String to Make Subsequence
+
+You are given two strings s and t consisting of only lowercase English letters.
+
+Return the minimum number of characters that need to be appended to the end of s so that t becomes a subsequence of s.
+
+A subsequence is a string that can be derived from another string by deleting some or no characters without changing the order of the remaining characters.
+Time Complexity ::O(n)
+Space Complexity :: O(1)
+
+Code :: 
+#pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+    int appendCharacters(string s, string t) {
+        auto it = s.find(t);
+        if(it!=string::npos)return 0;
+        int j=0;
+        for(int i=0;i<s.length();i++){
+            if(s[i]==t[j])
+               j++;
+        }
+        if(j==t.length())
+           return 0;
+        else
+        return t.length() - j;
+    }
+};
