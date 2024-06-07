@@ -1,0 +1,51 @@
+
+Problem :: 648. Replace Words
+In English, we have a concept called root, which can be followed by some other word to form another longer word - let's call this word derivative. For example, when the root "help" is followed by the word "ful", we can form a derivative "helpful".
+Given a dictionary consisting of many roots and a sentence consisting of words separated by spaces, replace all the derivatives in the sentence with the root forming it. If a derivative can be replaced by more than one root, replace it with the root that has the shortest length.
+Return the sentence after the replacement.
+Time Complexity :: O(N * word.length())
+Space Complexity :: O(1)
+
+code :: #pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+    string replaceWords(vector<string>& dict, string sentence) {
+        sort(begin(dict) , end(dict));
+        stringstream ss;
+        ss<<sentence;
+        string t;
+        string ans ="";
+        while(ss>>t){
+            bool f = 1;
+             string stt="";
+            for(int i=0 ; i<dict.size() ; i++){
+                if(dict[i][0]==t[0]){
+                    int j = 0;
+                    string st = dict[i];
+                    while(j<st.size() && st[j]==t[j]){
+                        stt+=t[j];
+                        j++;
+                    }
+                    if(j==st.size()){ 
+                        f = 0;
+                        break;
+                    }
+                    else{
+                        stt="";
+                    }
+                }
+            }
+            if(f)ans+=t;
+            else if(!f)ans+=stt;
+            ans+=' ';
+        }
+        ans.pop_back();
+        return ans;
+    }
+};
