@@ -1,0 +1,45 @@
+Problem :: 523. Continuous Subarray Sum
+Given an integer array nums and an integer k, return true if nums has a good subarray or false otherwise.
+A good subarray is a subarray where:
+its length is at least two, and
+the sum of the elements of the subarray is a multiple of k.
+Note that:
+
+A subarray is a contiguous part of the array.
+An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
+
+Time Complexity :: O(N) 
+Space Complexity :: O(N)
+
+Code :: #pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<int>prefix(n,0) ;
+        prefix[0] = nums[0];
+        for(int i=1 ;  i<n ; i++){
+          prefix[i] = prefix[i-1] + nums[i];
+        }
+        for(int i=0 ; i<n ; i++){
+            prefix[i] = prefix[i]%k ; 
+        }
+        unordered_map<int,int>m;
+        m[0] = 0;
+        int sum =0;
+        for(int i=0 ;i <n ; i++){
+            if(m.find(prefix[i])!=m.end()){
+                if(i+1 -m[prefix[i]]>=2)return 1;
+            }
+            else
+                m[prefix[i]] = i+1;
+        }
+        return 0;
+    }
+};
