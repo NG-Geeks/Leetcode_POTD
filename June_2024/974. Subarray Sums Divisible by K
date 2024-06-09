@@ -1,0 +1,36 @@
+Problem :: 974. Subarray Sums Divisible by K
+
+Given an integer array nums and an integer k, return the number of non-empty subarrays that have a sum divisible by k.
+A subarray is a contiguous part of an array.
+
+Time Complexity :: O(N)
+Space Complexity :: O(N)
+
+Code :: 
+#pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        unordered_map<int,int>m;
+        int prefix =0 ;
+        m[0] = 1;
+        int ans=0;
+        for(int i =0 ; i<nums.size(); i++){
+            prefix =( prefix + (nums[i]%k + k)%k)%k;
+            if(m.find(prefix)!=m.end()){
+                ans+=m[prefix];
+                m[prefix]++;
+            }
+            else{
+                m[prefix] = 1;
+            }
+        }
+        return ans;
+    }
+};
