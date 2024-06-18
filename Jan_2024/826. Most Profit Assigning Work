@@ -1,0 +1,31 @@
+Problem ::
+826. Most Profit Assigning Work
+
+You have n jobs and m workers. You are given three arrays: difficulty, profit, and worker where:
+
+difficulty[i] and profit[i] are the difficulty and the profit of the ith job, and
+worker[j] is the ability of jth worker (i.e., the jth worker can only complete a job with difficulty at most worker[j]).
+Every worker can be assigned at most one job, but one job can be completed multiple times.
+
+For example, if three workers attempt the same job that pays $1, then the total profit will be $3. If a worker cannot complete any job, their profit is $0.
+Return the maximum profit we can achieve after assigning the workers to the jobs.
+
+Time complexity :: O(m) + O(N) + O(maxi)
+Space Complexity :: O(N)
+
+class Solution {
+public:
+    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
+        int maxi = *max_element(difficulty.begin() , difficulty.end());
+        vector<int>dp(maxi+1);
+        int l=0;
+        for(int i =0 ; i<profit.size() ; i++)dp[difficulty[i]] = max( dp[difficulty[i]], profit[i]);
+        for(int i= 1  ; i<maxi+1 ;i++)dp[i] = max(dp[i] , dp[i-1]);
+        int maxprofit = 0;
+        for(int i=0 ; i<worker.size() ; i++){
+            if(worker[i]<=maxi)maxprofit += dp[worker[i]];
+            else maxprofit += dp[maxi]; 
+        }
+        return maxprofit;
+    }
+};
