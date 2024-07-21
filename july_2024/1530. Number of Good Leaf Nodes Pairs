@@ -1,0 +1,46 @@
+
+Problem :: 1530. Number of Good Leaf Nodes Pairs
+
+You are given the root of a binary tree and an integer distance. A pair of two different leaf nodes of a binary tree is said to be good if the length of the shortest path between them is less than or equal to distance.
+
+Return the number of good leaf node pairs in the tree.
+
+ 
+
+
+Time Complexity :: O(n * d^2)
+Space Complexity :: O(N)
+
+Code ::
+
+class Solution {
+    int cnt =0;
+    vector<int> solve(TreeNode * root , int d){
+        if(!root)return {0};
+        if(!root->left && !root->right)return {1};
+
+        vector<int>left = solve(root->left , d);
+        vector<int>right = solve(root->right ,d);
+
+        for(int l:left){
+            for(int r:right){
+                if(l>0 && r>0)
+                  if(l+r<=d)cnt++;
+            }
+        }
+        vector<int>ans;
+        for(int l:left)
+        if(l>0 && l+1<d)ans.push_back(l+1);
+        
+        for(int r:right)
+        if(r>0 && r+1<d)ans.push_back(r+1);
+
+        return ans;
+
+    }
+public:
+    int countPairs(TreeNode* root, int distance) {
+        solve(root , distance);
+        return cnt;
+    }
+};
