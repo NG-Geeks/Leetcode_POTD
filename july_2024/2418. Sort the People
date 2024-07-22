@@ -1,0 +1,31 @@
+Problem :: 
+
+2418. Sort the People
+
+You are given an array of strings names, and an array heights that consists of distinct positive integers. Both arrays are of length n.
+
+For each index i, names[i] and heights[i] denote the name and height of the ith person.
+
+Return names sorted in descending order by the people's heights.
+
+ Time Complexity :: O(N)
+ Space Complexity :: O(1)
+
+
+Code :: 
+class Solution {
+public:
+    vector<string> sortPeople(vector<string>& names, vector<int>& heights) {
+        priority_queue<pair<int,string>>pq;
+        for(int i=0 ; i<names.size() ; i++){
+            pq.push({heights[i] , names[i]});
+        }
+        vector<string>ans;
+        while(!pq.empty()){
+            auto it = pq.top();
+            pq.pop();
+            ans.push_back(it.second);
+        }
+        return ans;
+    }
+};
