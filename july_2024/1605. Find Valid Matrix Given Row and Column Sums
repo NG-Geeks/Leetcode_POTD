@@ -1,0 +1,36 @@
+Problem :: 1605. Find Valid Matrix Given Row and Column Sums
+
+You are given two arrays rowSum and colSum of non-negative integers where rowSum[i] is the sum of the elements in the ith row and colSum[j] is the sum of the elements of the jth column of a 2D matrix. In other words, you do not know the elements of the matrix, but you do know the sums of each row and column.
+
+Find any matrix of non-negative integers of size rowSum.length x colSum.length that satisfies the rowSum and colSum requirements.
+
+Return a 2D array representing any matrix that fulfills the requirements. It's guaranteed that at least one matrix that fulfills the requirements exists.
+
+ 
+Time Complexity :: O(N)
+Space Complexity :: O(1)
+
+
+Code ::
+#pragma gcc optimize("03")
+auto init  = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+    vector<vector<int>> restoreMatrix(vector<int>& row, vector<int>& col) {
+        vector<vector<int>>mat(row.size() , vector<int>(col.size() , 0));
+        for(int i=0 ; i<row.size() ; i++){
+            for(int j=0 ; j<col.size() ; j++){
+                int k = min(row[i] , col[j]);
+                mat[i][j] = k;
+                row[i]-=k;
+                col[j]-=k;
+            }
+        }
+        return mat;
+    }
+};
