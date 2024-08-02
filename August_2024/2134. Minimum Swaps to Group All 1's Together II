@@ -1,0 +1,35 @@
+Problem :: 
+2134. Minimum Swaps to Group All 1's Together II
+A swap is defined as taking two distinct positions in an array and swapping the values in them.
+A circular array is defined as an array where we consider the first element and the last element to be adjacent.
+Given a binary circular array nums, return the minimum number of swaps required to group all 1's present in the array together at any location.
+
+ 
+Time Complexity :: O(N)
+Space Complexity :: O(1)
+
+Code ::
+class Solution {
+public:
+    int minSwaps(vector<int>& nums) {
+        int n = nums.size(); 
+        int k = 0;
+        for(int i:nums){
+            if(i)k++;
+        }
+        nums.insert(nums.end() , nums.begin() , nums.end());
+        int cnt = 0;
+        int mini = n;
+        int i=0, j=0;
+        while(j<2*n){
+             cnt += (nums[j]==1);
+             if(j-i+1==k){
+                mini = min(mini , k-cnt);
+                cnt-=(nums[i]==1);
+                i++;
+             }
+             j++;
+        }
+        return mini==n?0:mini; 
+    }
+};
