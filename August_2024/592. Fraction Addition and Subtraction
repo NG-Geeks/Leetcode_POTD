@@ -1,0 +1,51 @@
+
+Problem :: 
+592. Fraction Addition and Subtraction
+Given a string expression representing an expression of fraction addition and subtraction, return the calculation result in string format.
+The final result should be an irreducible fraction. If your final result is an integer, change it to the format of a fraction that has a denominator 1. So in this case, 2 should be converted to 2/1.
+
+Time Complexity ::  O(N)
+Space Complexity :: O(N)
+ 
+
+Code ::
+class Solution {
+        using int2=pair<int, int>;
+        void print(auto& f){
+        for(auto& [x, y]: f) cout<<"("<<x<<","<<y<<")";
+        cout<<endl;
+    }
+     int2 add(int2& x, int2& y){
+        auto [xp, xq]=x;
+        auto [yp, yq]=y;
+        long long q=xq*yq;
+        long long p=xp*yq+xq*yp;
+        long long g=gcd(p, q);
+        return {p/g, q/g};
+    }
+     vector<int2> convert(string& expression) {
+        vector<int2> fraction;
+        stringstream ss(expression);
+        char op;
+        int num, denom;
+
+        while (ss>>num>>op>>denom) {
+            fraction.emplace_back(num, denom);
+        //    cout<<num<<","<<op<<denom<<endl;
+        }
+        return fraction;
+    }
+public:
+    string fractionAddition(string s) {
+        auto fraction=convert(s);
+         print(fraction);
+        int fz=fraction.size();
+        int2 ans={0, 1};
+        for(auto& f: fraction){
+            ans=add(ans, f);
+        }
+        string st=to_string(ans.first)+"/"+to_string(ans.second);
+        cout<<-1-2;
+        return st;
+    }
+};
