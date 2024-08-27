@@ -1,0 +1,119 @@
+Problem :: 97. Interleaving String
+
+Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2.
+
+An interleaving of two strings s and t is a configuration where s and t are divided into n and m 
+substrings
+ respectively, such that:
+
+s = s1 + s2 + ... + sn
+t = t1 + t2 + ... + tm
+|n - m| <= 1
+The interleaving is s1 + t1 + s2 + t2 + s3 + t3 + ... or t1 + s1 + t2 + s2 + t3 + s3 + ...
+Note: a + b is the concatenation of strings a and b.
+
+Complexity
+Time complexity:
+O(L*M) where L  = len(s1) , M = len(s2)
+Space complexity:
+O(L*M*N) where L = len(s1) , M = len(s2) , N= len(s3)
+
+Intuition
+Intuition is simple we have to compare string s3 with s1 and s2 
+Depending on which string s1 , s2 character is equal to s3 character. 
+Approach
+ 1. Simply start from s1 , s2 and compare with s3
+ 2. Initialize i for s1 , j for s2 , k for s3 by 0
+ 3. Equate with i and k  , j and k index with corresponding string.
+ 4. The base condition will be when i = len(s1) , j = len(s2) , and k = len(s3) then return true
+Code
+class Solution {
+    bool solve(string s1 , string s2 , string s3 , int i ,int j , int k ){
+        if(i==s1.size() && j==s2.size() && k==s3.size())return 1;
+        bool ans = 0;
+        if(i<s1.size() && s1[i]==s3[k]){
+           ans |= solve(s1 ,s2 , s3 , i+1 , j , k+1 );
+        }
+        if(j<s2.size() && s2[j]==s3[k]){
+            ans |= solve(s1 , s2 , s3 , i , j+1 , k+1 );
+        }
+        return   ans;
+    }
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        return  solve(s1 , s2 , s3 , 0 , 0 , 0);
+    }
+};
+5. After the Recursion solution , Initialize the Dp 
+6. Now which Dp should be initialzed like 1D , 2D , 3D
+7. So According to our solution of Recursion . We have found that i , j , k three of them are changing . So it means , We should initialize 3D Dp .
+  So Recursion + Memoization Code 
+Code
+class Solution {
+// Recursion and Memoization
+    bool solve(string s1 , string s2 , string s3 , int i ,int j , int k ,  vector<vector<vector<int>>>&dp){
+        if(i==s1.size() && j==s2.size() && k==s3.size())return 1;
+        if(dp[i][j][k]!=-1)return dp[i][j][k];
+        bool ans = 0;
+        if(i<s1.size() && s1[i]==s3[k]){
+           ans |= solve(s1 ,s2 , s3 , i+1 , j , k+1 , dp);
+        }
+        if(j<s2.size() && s2[j]==s3[k]){
+            ans |= solve(s1 , s2 , s3 , i , j+1 , k+1 , dp);
+        }
+        return dp[i][j][k] =  ans;
+    }
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        // vector<vector<vector<int>>>dp(s1.size()+1 ,vector<vector<int>>(s2.size()+1 , vector<int>(s3.size()+1 , -1)));
+        // return  solve(s1 , s2 , s3 , 0 , 0 , 0 , dp);
+        return solve(s1 , s2 , s3);
+    }
+};
+Iterative Solution of  Above Recursive approach is  Given Below
+// Bottom - UP Approach  DP
+class Solution {
+    
+    bool solve(string s1 , string s2 , string s3 ){
+        int l = s1.size() , m = s2.size() , n = s3.size();
+        if(l + m != n) return false;
+        if (l == 0) return s2 == s3;
+        if (m == 0) return s1 == s3;
+        vector<vector<vector<int>>>dp(s1.size()+1 ,vector<vector<int>>(s2.size()+1 , vector<int>(s3.size()+1 , 0)));
+        dp[s1.size()][s2.size()][s3.size()] = 1;
+        for(int i = 0; i < l; i++) {
+            for(int k=0 ; k<n ; k++){
+            if(s1.substr(i, l-i) == s3.substr(m+i, l-i))
+                dp[i][m][k] = true;
+            }
+        }
+        for(int j = 0; j < m; j++) {
+            for(int k=0 ; k<n ; k++){
+            if(s2.substr(j, m-j) == s3.substr(l+j, m-j))
+                dp[l][j][k] = true;
+            }
+        }
+        for(int i= s1.size()-1 ; i>=0 ; i--){
+            for(int j= s2.size()-1 ; j>=0 ; j--){
+                for(int k = s3.size()-1 ; k>=0 ; k--){
+                    bool ans = 0;
+                    if(s1[i]==s3[k]){
+                    ans |=dp[i+1] [j ] [k+1];
+                    }
+
+                    if( s2[j]==s3[k]){
+                        ans |=dp[ i ][j+1 ][k+1 ];
+                    }
+                    dp[i][j][k] =  ans;
+                }
+            }
+        }
+        return dp[0][0][0];
+    }
+public:
+    bool isInterleave(string s1, string s2, string s3) {
+        // vector<vector<vector<int>>>dp(s1.size()+1 ,vector<vector<int>>(s2.size()+1 , vector<int>(s3.size()+1 , -1)));
+        // return  solve(s1 , s2 , s3 , 0 , 0 , 0 , dp);
+        return solve(s1 , s2 , s3);
+    }
+};
