@@ -1,0 +1,54 @@
+
+Problem :: 
+1514. Path with Maximum Probability
+
+You are given an undirected weighted graph of n nodes (0-indexed), represented by an edge list where edges[i] = [a, b] is an undirected edge connecting the nodes a and b with a probability of success of traversing that edge succProb[i].
+
+Given two nodes start and end, find the path with the maximum probability of success to go from start to end and return its success probability.
+
+If there is no path from start to end, return 0. Your answer will be accepted if it differs from the correct answer by at most 1e-5.
+
+
+Code :: 
+
+#pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+        vector<pair<int,double>>adj[n];
+        int i=0;
+        for(auto it:edges){
+            int u= it[0];
+            int v =it[1];
+            double w = succProb[i++];
+            adj[u].push_back({v,w});
+            adj[v].push_back({u,w});
+        }
+        vector<double>dist(n , 0);
+        queue<pair<double,int>>pq;
+        pq.push({1.00,start});
+        dist[start]=1;
+        while(!pq.empty()){
+            auto it = pq.front();
+            pq.pop();
+            double dis = it.first;
+            int node = it.second;
+            for (auto neighbour :adj[node]){
+                int adjnode = neighbour.first;
+                double wt = neighbour.second;
+                if(dist[adjnode] < dis * wt ){
+                    dist[adjnode] = dis * wt;
+                    pq.push({dis*wt , adjnode});
+                }
+            }
+        }
+        for(double i:dist)cout<<i<<" ";
+        return dist[end];
+    }
+};
