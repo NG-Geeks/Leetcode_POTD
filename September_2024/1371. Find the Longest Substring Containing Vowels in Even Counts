@@ -1,0 +1,29 @@
+PROBLEM :: 1371. Find the Longest Substring Containing Vowels in Even Counts
+Given the string s, return the size of the longest substring containing each vowel an even number of times. 
+That is, 'a', 'e', 'i', 'o', and 'u' must appear an even number of times.
+
+TIME COMPLEXITY :: o(n)
+SPACE COMPLEXITY :: O(1)
+
+CODE :: 
+class Solution {
+public:
+    int findTheLongestSubstring(string s) {
+        int mask=0;
+        unordered_map<int , int>m;
+        m[0]=-1;
+        int n=0;
+        for(int i=0;i<s.length();i++){
+            if(s[i]=='a' || s[i]=='e'|| s[i]=='o' or s[i]=='i' or s[i]=='u'){
+                mask^=(s[i]-'a'+1);
+            }
+            auto it = m.find(mask);
+                if(it==m.end())
+                 m[mask]=i;
+            
+            if(it!=m.end())
+              n= max(n,i-m[mask]);
+        }
+        return n;
+    }
+};
