@@ -1,0 +1,48 @@
+Problem :: 2064. Minimized Maximum of Products Distributed to Any Store
+
+You are given an integer n indicating there are n specialty retail stores. There are m product types of varying amounts, which are given as a 0-indexed integer array quantities, where quantities[i] represents the number of products of the ith product type.
+
+You need to distribute all products to the retail stores following these rules:
+
+A store can only be given at most one product type but can be given any amount of it.
+After distribution, each store will have been given some number of products (possibly 0). Let x represent the maximum number of products given to any store. You want x to be as small as possible, i.e., you want to minimize the maximum number of products that are given to any store.
+Return the minimum possible x.
+
+Time Complexity :: M * log(N) // M = quantities size and N = No. of speciality store
+Space Complexity :: O(1)
+
+Code :: 
+#pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+    bool canbetaken(int mid , int n , vector<int>&quantities){
+        int cnt =0;
+        for(int i:quantities){
+            cnt += ceil((double)i/mid);
+        }
+        return cnt<=n;
+    }
+public:
+    int minimizedMaximum(int n, vector<int>& quantities) {
+        int maxi = *max_element(begin(quantities),end(quantities));
+        int s = 1 , h = maxi;
+        int ans = INT_MAX;
+        while(s<=h){
+            int mid = s + (h-s)/2;
+            if(canbetaken(mid ,n , quantities)){
+                ans = min(ans , mid);
+                h = mid-1;
+            }
+            else{
+                s = mid + 1;
+            }
+        }
+        return ans;
+
+    }
+};
