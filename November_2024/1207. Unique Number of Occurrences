@@ -1,0 +1,21 @@
+Problem :: 1207. Unique Number of Occurrences
+
+Given an array of integers arr, return true if the number of occurrences of each value in the array is unique or false otherwise.
+
+Time Complexity :: O(N)
+Space Complexity :: O(N)
+
+
+Code :: 
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        unordered_map<int,int>m;
+        for(int &i:arr)m[i]++;
+        set<int>s;
+        for(auto &i:m){
+           s.insert(i.second);
+        }
+        return s.size()==m.size();
+    }
+};
