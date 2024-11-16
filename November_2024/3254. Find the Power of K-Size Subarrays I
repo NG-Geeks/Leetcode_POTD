@@ -1,0 +1,43 @@
+Problem :: 3254. Find the Power of K-Size Subarrays I
+
+You are given an array of integers nums of length n and a positive integer k.
+
+The power of an array is defined as:
+
+Its maximum element if all of its elements are consecutive and sorted in ascending order.
+-1 otherwise.
+You need to find the power of all 
+subarrays
+ of nums of size k.
+
+Return an integer array results of size n - k + 1, where results[i] is the power of nums[i..(i + k - 1)].
+Time Complexity :: O(N)
+Space Complexity :: O(N)
+
+class Solution {
+public:
+    vector<int> resultsArray(vector<int>& nums, int k) {
+        if (k == 1) {
+            return nums;  // If k is 1, every single element is a valid subarray
+        }
+
+        size_t length = nums.size();
+        vector<int> result(length - k + 1, -1);  // Initialize results with -1
+        int consecutiveCount = 1;  // Count of consecutive elements
+
+        for (size_t index = 0; index < length - 1; index++) {
+            if (nums[index] + 1 == nums[index + 1]) {
+                consecutiveCount++;
+            } else {
+                consecutiveCount = 1;  // Reset count if not consecutive
+            }
+
+            // If we have enough consecutive elements, update the result
+            if (consecutiveCount >= k) {
+                result[index - k + 2] = nums[index + 1];
+            }
+        }
+
+        return result;
+    }
+};
