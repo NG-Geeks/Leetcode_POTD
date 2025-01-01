@@ -1,0 +1,37 @@
+Problem :: 
+1422. Maximum Score After Splitting a String
+Given a string s of zeros and ones, return the maximum score after splitting the string into two non-empty substrings (i.e. left substring and right substring).
+
+The score after splitting a string is the number of zeros in the left substring plus the number of ones in the right substring.
+
+Time Complexity :: O(N)
+Space Complexity :: O(1)
+code :: 
+#pragma gcc optimize("03")
+auto init = [](){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
+class Solution {
+public:
+  int maxScore(string s) {
+        int left = s[0]=='0'?1:0;
+        int right=0;
+        for(int i=1;i<s.length();i++){
+            right+=(s[i]=='1')?1:0;
+        }
+        int maxsum = left + right;
+        for(int j =1 ;j<s.length()-1;j++){
+            if(s[j]=='0'){
+                left+=1;
+            }
+            else{
+                    right-=1;
+            }
+            maxsum = max(maxsum , left+right);
+        }
+        return maxsum;
+    }
+};
