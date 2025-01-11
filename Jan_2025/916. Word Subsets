@@ -1,0 +1,45 @@
+Problem :: 
+916. Word Subsets
+You are given two string arrays words1 and words2.
+A string b is a subset of string a if every letter in b occurs in a including multiplicity.
+For example, "wrr" is a subset of "warrior" but is not a subset of "world".
+A string a from words1 is universal if for every string b in words2, b is a subset of a.
+Return an array of all the
+
+
+Time Compexity :: O(N*M)
+Space Complexity :: O(1)
+
+
+Code ::
+class Solution {
+    bool check(int freq1[] , int freq2[] ){
+        for(int i=0 ; i<26 ; i++){
+            if(freq1[i]<freq2[i])return 0;
+        }
+        return 1;
+    }
+public:
+    vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
+       int freq2[26] = {0};
+       for(auto s : words2){
+            int freq1[26] = {0};
+           for(auto t:s){
+               freq1[t-'a']++;
+           }
+           for(int i=0 ;i<26 ; i++){
+            freq2[i] = max(freq2[i] , freq1[i]);
+           }
+       }
+       vector<string>v;
+       for(auto s:words1){
+           int freq1[26] = {0};
+           for(auto t:s){
+              freq1[t-'a']++;
+           }
+           bool c=  check(freq1 , freq2);
+           if(c)v.push_back(s);
+       }for(auto i:freq2)cout<<i<<" ";
+       return v;
+    }
+};
