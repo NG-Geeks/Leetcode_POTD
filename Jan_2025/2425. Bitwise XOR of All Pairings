@@ -1,0 +1,23 @@
+
+Problem :: 
+2425. Bitwise XOR of All Pairings
+
+You are given two 0-indexed arrays, nums1 and nums2, consisting of non-negative integers. There exists another array, nums3, which contains the bitwise XOR of all pairings of integers between nums1 and nums2 (every integer in nums1 is paired with every integer in nums2 exactly once).
+
+Return the bitwise XOR of all integers in nums3.
+
+Time Complexity :: O(M+N)
+Sapce Complexity :: O(1)
+
+Code ::
+class Solution {
+public:
+    int xorAllNums(vector<int>& nums1, vector<int>& nums2) {
+        int ans =0;
+        if(nums2.size() &1)
+            for(int i:nums1)ans = ans^i;
+        if(nums1.size() & 1)
+            for(int i:nums2)ans = ans^i;
+        return ans;
+    }
+};
