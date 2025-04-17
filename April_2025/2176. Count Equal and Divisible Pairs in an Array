@@ -1,0 +1,28 @@
+PROBLEM :: 
+2176. Count Equal and Divisible Pairs in an Array
+Given a 0-indexed integer array nums of length n and an integer k, return the number of pairs (i, j) where 0 <= i < j < n, such that nums[i] == nums[j] and (i * j) is divisible by k.
+ 
+
+TIME COMPLEXITY :: O(N)
+SPACE COMPLEXITY : O(N)
+
+CODE :: 
+class Solution {
+public:
+    int countPairs(vector<int>& nums, int k) {
+        unordered_map<int, vector<int>> indexMap;
+        int count = 0;
+
+        for (int j = 0; j < nums.size(); ++j) {
+            for (int i : indexMap[nums[j]]) {
+                if ((i * j) % k == 0) {
+                    count++;
+                }
+            }
+            indexMap[nums[j]].push_back(j);
+        }
+
+        return count;
+
+    }
+};
